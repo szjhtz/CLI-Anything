@@ -30,6 +30,25 @@ If you discover a security vulnerability, please report it responsibly:
 4. We aim to acknowledge reports within 48 hours and release a fix within
    7 days for critical issues.
 
+## Codec Allowlists (Breaking Change)
+
+The kdenlive and shotcut melt backends validate `vcodec` and `acodec`
+parameters against `ALLOWED_VCODECS` / `ALLOWED_ACODECS` frozensets.
+Codecs not in the allowlist will raise `ValueError`.
+
+The allowlists cover all codecs used by existing export presets plus
+common hardware-accelerated variants. If your workflow requires an
+unlisted codec, extend the frozensets in `melt_backend.py`:
+
+```python
+from cli_anything.kdenlive.utils.melt_backend import ALLOWED_VCODECS
+# ALLOWED_VCODECS is a frozenset — create a new one to extend
+ALLOWED_VCODECS = ALLOWED_VCODECS | {"my_custom_codec"}
+```
+
+Similarly, `extra_args` cannot contain `vcodec=`, `acodec=`, or
+`-consumer` prefixes — use the dedicated function parameters instead.
+
 ## Security Guidelines for Harness Developers
 
 When building a new CLI harness, follow these rules:
