@@ -14,6 +14,7 @@
 !.gitignore
 !/README.md
 !/CONTRIBUTING.md
+!/SECURITY.md
 !/assets/
 !/.claude-plugin/
 !/.github/
